@@ -37,9 +37,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'corsheaders',         # Allow React connection
     'rest_framework',      # Django REST Framework
+    'rest_framework.authtoken', # It used for token based authentication.
     'products',             # App for product management
+
+    # Libraries serves for Auth & JWT
+    'dj_rest_auth',
+    'dj_rest_auth.registration', # Using for registrating functionaliy.
+
+    # Libraries servev for OAuth2 (Google Login)
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google', # Google Login provider.
 ]
 
 MIDDLEWARE = [
@@ -51,9 +64,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'shop_project.urls'
+
+# Declare to the Django REST Framework that it uses JWT as the primary authentication mechanism.
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 TEMPLATES = [
     {
@@ -134,3 +156,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [  # Declare React port
     "http://localhost:5173",
 ]
+
+SITE_ID = 1 # When using Django-allauth, this id is required to define which site is used.
+
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'battlestation-auth'  # Save necessary cookie
+JWT_AUTH_REFRESH_COOKIE = 'battlestation-refresh'
+
+#  The configuration requires logging in using email instead of username (standard e-commerce practice).
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'none'
