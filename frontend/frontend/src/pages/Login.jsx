@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import API from '../services/api';
-import { GoogleLogin } from '@react-oauth/google'; // 1. Bổ sung import nút bấm Google
+import { GoogleLogin } from '@react-oauth/google'; // Import Google Button
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -35,7 +35,7 @@ const Login = () => {
         const googleToken = credentialResponse.credential;
 
         // Send this token to the Django Backend endpoint we just wrote in Phase 2.
-        API.post('auth/google/', { access_token: googleToken })
+        API.post('auth/google/', { access_token: googleToken, id_token: googleToken })
             .then(res => {
                 // Django completes cross-validation with Google and returns an internal JWT to React.
                 const { access, refresh } = res.data;
