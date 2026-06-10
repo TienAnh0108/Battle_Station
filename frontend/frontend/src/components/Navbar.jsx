@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react'; 
 import { Link } from 'react-router-dom';
+import { CartContext } from '../context/CartContext.jsx'; 
 
 const Navbar = () => {
+  const { getCartCount } = useContext(CartContext);
+
   // Check user logged in using token 
   const isLoggedIn = !!localStorage.getItem('access_token');
 
   const handleLogout = () => {
-    // Delete toke from server when clicking logout button
+    // Delete token from server when clicking logout button
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     alert('Đã đăng xuất thành công!');
@@ -14,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ padding: '15px 20px', backgroundColor: '#1a1a1a', color: '#fff', display: 'flex', justifyContent: 'between', alignItems: 'center', fontFamily: 'sans-serif', borderBottom: '2px solid #333' }}>
+    <nav style={{ padding: '15px 20px', backgroundColor: '#1a1a1a', color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'sans-serif', borderBottom: '2px solid #333' }}>
       <div style={{ flexGrow: 1 }}>
         <Link to="/" style={{ color: '#fff', textDecoration: 'none', fontWeight: 'bold', fontSize: '20px', letterSpacing: '1px' }}>
           BATTLESTATION STORE
@@ -23,6 +26,26 @@ const Navbar = () => {
 
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
         <Link to="/" style={{ color: '#ccc', textDecoration: 'none', fontWeight: '500' }}>Home</Link>
+
+        {/* Added: Shopping cart link with dynamic real-time badge */}
+        <Link to="/cart" style={{ color: '#ccc', textDecoration: 'none', fontWeight: '500', position: 'relative', display: 'flex', alignItems: 'center', gap: '5px' }}>
+          🛒 Cart
+          {getCartCount() > 0 && (
+            <span style={{
+              backgroundColor: '#dc3545',
+              color: '#fff',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              borderRadius: '50%',
+              padding: '2px 6px',
+              position: 'absolute',
+              top: '-12px',
+              right: '-15px'
+            }}>
+              {getCartCount()}
+            </span>
+          )}
+        </Link>
 
         {isLoggedIn ? (
           // If logged in, logout button will appear
