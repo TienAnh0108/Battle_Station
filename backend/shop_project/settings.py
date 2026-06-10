@@ -130,6 +130,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    # Cần thiết để đăng nhập bằng Username vào trang Django Admin mặc định
+    'django.contrib.auth.backends.ModelBackend',
+
+    # Cần thiết để dj-rest-auth và allauth hiểu cách tìm tài khoản bằng EMAIL
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
